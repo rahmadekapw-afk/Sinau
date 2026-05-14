@@ -42,7 +42,12 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $user = \App\Models\User::where('email', $this->email)->first();
+
+        // Cek menggunakan SHA-1 sesuai keinginan USER, atau Bcrypt jika ada
+        if ($user && (sha1($this->password) === $user->password || \Illuminate\Support\Facades\Hash::check($this->password, $user->password))) {
+            Auth::login($user, $this->boolean('remember'));
+        } else {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

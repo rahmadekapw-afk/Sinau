@@ -10,7 +10,7 @@
                     📜 Riwayat
                 </a>
                 <a href="{{ route('chat.new') }}"
-                   class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition">
+                   class="inline-flex items-center px-4 py-2 bg-accent text-white text-sm rounded-lg hover:bg-primary transition shadow-md">
                     ✨ Chat Baru
                 </a>
             </div>
@@ -20,30 +20,32 @@
     <div class="py-6">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
-            {{-- Chat Container --}}
-            <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl overflow-hidden flex flex-col"
+            {{-- Chat Container 3D --}}
+            <div style="background-color: white; box-shadow: 0 15px 0 #e2e8f0, 0 30px 40px -10px rgba(0, 0, 0, 0.1);" 
+                 class="dark:bg-gray-800 rounded-[2rem] overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700"
                  style="height: 70vh;">
 
                 {{-- Messages Area --}}
-                <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <div id="chat-messages" class="flex-1 overflow-y-auto p-8 space-y-6 bg-gray-50/30">
 
                     @if($histories->isEmpty())
-                        <div class="flex flex-col items-center justify-center h-full text-center">
-                            <div class="text-6xl mb-4">🎓</div>
-                            <h3 class="text-xl font-bold text-gray-700 dark:text-gray-200 mb-2">Halo, {{ Auth::user()->name }}!</h3>
-                            <p class="text-gray-500 dark:text-gray-400 max-w-md">
-                                Saya <strong>Sinau AI</strong>, asisten belajar pintarmu. Tanyakan apa saja — matematika, sains, bahasa, sejarah, atau topik apapun!
+                        <div class="flex flex-col items-center justify-center h-full text-center p-6">
+                            <div class="w-24 h-24 bg-accent/5 rounded-[2rem] flex items-center justify-center text-6xl mb-6 shadow-inner border border-accent/10">🎓</div>
+                            <h3 class="text-2xl font-black text-gray-800 dark:text-gray-200 mb-3 tracking-tight">Halo, {{ Auth::user()->name }}!</h3>
+                            <p class="text-gray-500 dark:text-gray-400 max-w-md font-medium">
+                                Saya <span class="text-accent font-bold italic">Sinau AI</span>, asisten belajar pintarmu. Mari kita mulai petualangan belajarmu hari ini!
                             </p>
-                            <div class="mt-6 grid grid-cols-2 gap-3 w-full max-w-lg">
+                            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-xl">
                                 @foreach([
-                                    '📐 Jelaskan teorema Pythagoras dengan contoh',
-                                    '🧪 Apa itu fotosintesis? Jelaskan step by step',
-                                    '📝 Bantu saya buat esai tentang lingkungan',
-                                    '🔢 Cara menyelesaikan persamaan kuadrat?'
+                                    '📐 Jelaskan teorema Pythagoras',
+                                    '🧪 Proses fotosintesis step by step',
+                                    '📝 Ide esai tentang lingkungan',
+                                    '🔢 Cara hitung persamaan kuadrat'
                                 ] as $suggestion)
                                 <button onclick="sendSuggestion(this)"
                                         data-text="{{ $suggestion }}"
-                                        class="suggestion-btn text-left p-3 bg-indigo-50 dark:bg-gray-700 hover:bg-indigo-100 dark:hover:bg-gray-600 rounded-xl text-sm text-indigo-700 dark:text-indigo-300 transition border border-indigo-200 dark:border-gray-600">
+                                        style="box-shadow: 0 4px 0 #f1f5f9;"
+                                        class="suggestion-btn text-left p-4 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-2xl text-sm font-bold text-gray-700 dark:text-gray-200 transition-all border border-gray-200 dark:border-gray-600 active:translate-y-[2px] active:shadow-none">
                                     {{ $suggestion }}
                                 </button>
                                 @endforeach
@@ -53,17 +55,17 @@
                         @foreach($histories as $chat)
                             @if($chat->role === 'user')
                                 <div class="flex justify-end">
-                                    <div class="max-w-[75%] bg-indigo-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow">
-                                        <p class="text-sm leading-relaxed">{{ $chat->message }}</p>
-                                        <span class="text-xs text-indigo-200 mt-1 block text-right">{{ $chat->created_at->format('H:i') }}</span>
+                                    <div style="background-color: #B91C1C; box-shadow: 0 4px 0 #450A0A;" class="max-w-[80%] text-white rounded-2xl rounded-tr-sm px-5 py-4 shadow-xl">
+                                        <p class="text-sm font-bold leading-relaxed">{{ $chat->message }}</p>
+                                        <span class="text-[10px] text-white/50 mt-2 block text-right font-black">{{ $chat->created_at->format('H:i') }}</span>
                                     </div>
                                 </div>
                             @else
-                                <div class="flex justify-start gap-3">
-                                    <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm">🤖</div>
-                                    <div class="max-w-[75%] bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow">
-                                        <div class="text-sm leading-relaxed prose prose-sm dark:prose-invert max-w-none ai-response">{{ $chat->message }}</div>
-                                        <span class="text-xs text-gray-400 mt-1 block">{{ $chat->created_at->format('H:i') }}</span>
+                                <div class="flex justify-start gap-4">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#450A0A] to-[#B91C1C] rounded-2xl flex items-center justify-center text-white text-lg shadow-lg border-t border-white/20">🤖</div>
+                                    <div class="max-w-[80%] bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-2xl rounded-tl-sm px-5 py-4 shadow-lg border border-gray-100 dark:border-gray-600">
+                                        <div class="text-sm font-medium leading-relaxed prose prose-sm dark:prose-invert max-w-none ai-response">{{ $chat->message }}</div>
+                                        <span class="text-[10px] text-gray-400 mt-2 block font-bold uppercase tracking-wider">{{ $chat->created_at->format('H:i') }}</span>
                                     </div>
                                 </div>
                             @endif
@@ -71,35 +73,36 @@
                     @endif
 
                     {{-- Typing indicator --}}
-                    <div id="typing-indicator" class="hidden flex justify-start gap-3">
-                        <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm">🤖</div>
-                        <div class="bg-gray-100 dark:bg-gray-700 rounded-2xl rounded-tl-sm px-4 py-3 shadow">
-                            <div class="flex gap-1 items-center h-5">
-                                <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0ms"></span>
-                                <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:150ms"></span>
-                                <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:300ms"></span>
+                    <div id="typing-indicator" class="hidden flex justify-start gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#450A0A] to-[#B91C1C] rounded-2xl flex items-center justify-center text-white text-lg shadow-lg border-t border-white/20">🤖</div>
+                        <div class="bg-white dark:bg-gray-700 rounded-2xl rounded-tl-sm px-5 py-4 shadow-lg border border-gray-100 dark:border-gray-600">
+                            <div class="flex gap-1.5 items-center h-6">
+                                <span class="w-2.5 h-2.5 bg-accent rounded-full animate-bounce" style="animation-delay:0ms"></span>
+                                <span class="w-2.5 h-2.5 bg-accent rounded-full animate-bounce" style="animation-delay:150ms"></span>
+                                <span class="w-2.5 h-2.5 bg-accent rounded-full animate-bounce" style="animation-delay:300ms"></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {{-- Input Area --}}
-                <div class="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900">
-                    <form id="chat-form" class="flex gap-3 items-end">
+                {{-- Input Area 3D --}}
+                <div class="border-t border-gray-100 dark:border-gray-700 p-6 bg-white dark:bg-gray-900">
+                    <form id="chat-form" class="flex gap-4 items-end max-w-4xl mx-auto">
                         @csrf
                         <div class="flex-1 relative">
                             <textarea
                                 id="message-input"
                                 name="message"
                                 rows="1"
-                                placeholder="Tanyakan sesuatu kepada Sinau AI..."
-                                class="w-full resize-none rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 px-4 py-3 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-                                style="max-height: 120px;"
+                                placeholder="Tanyakan apa saja kepada Sinau AI..."
+                                class="w-full resize-none rounded-2xl border-2 border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 px-5 py-4 pr-12 text-base font-medium focus:outline-none focus:border-accent/30 focus:ring-4 focus:ring-accent/10 transition-all shadow-inner"
+                                style="max-height: 150px;"
                             ></textarea>
                         </div>
                         <button type="submit" id="send-btn"
-                                class="flex-shrink-0 w-12 h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl flex items-center justify-center transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                style="background-color: #B91C1C; box-shadow: 0 4px 0 #450A0A;"
+                                class="flex-shrink-0 w-14 h-14 text-white rounded-2xl flex items-center justify-center transition-all shadow-xl disabled:opacity-50 disabled:cursor-not-allowed hover:translate-y-[1px] hover:shadow-lg active:translate-y-[4px] active:shadow-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                 <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                             </svg>
                         </button>
@@ -154,17 +157,17 @@
             if (role === 'user') {
                 chatMessages.insertAdjacentHTML('beforeend', `
                     <div class="flex justify-end">
-                        <div class="max-w-[75%] bg-indigo-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow">
+                        <div class="max-w-[75%] bg-accent text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow-md">
                             <p class="text-sm leading-relaxed">${escapeHtml(text)}</p>
-                            <span class="text-xs text-indigo-200 mt-1 block text-right">${now}</span>
+                            <span class="text-xs text-white/60 mt-1 block text-right">${now}</span>
                         </div>
                     </div>
                 `);
             } else {
                 chatMessages.insertAdjacentHTML('beforeend', `
                     <div class="flex justify-start gap-3">
-                        <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm">🤖</div>
-                        <div class="max-w-[75%] bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm border border-accent/20">🤖</div>
+                        <div class="max-w-[75%] bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-md">
                             <div class="text-sm leading-relaxed ai-response">${escapeHtml(text)}</div>
                             <span class="text-xs text-gray-400 mt-1 block">${now}</span>
                         </div>

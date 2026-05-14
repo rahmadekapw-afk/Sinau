@@ -22,6 +22,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'github_id',
+        'facebook_id',
+        'linkedin_id',
+        'microsoft_id',
+        'discord_id',
+        'apple_id',
+        'avatar',
     ];
 
     /**
@@ -43,7 +51,14 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
         ];
+    }
+
+    /**
+     * User has many tasks.
+     */
+    public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\Task::class);
     }
 }

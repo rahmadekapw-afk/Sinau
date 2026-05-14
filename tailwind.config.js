@@ -12,8 +12,12 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                primary: '#450A0A', // Hitam-Kemerahan pengganti biru
+                accent: '#7F1D1D'  // Merah Maroon yang lebih gelap
+            }
         },
     },
 

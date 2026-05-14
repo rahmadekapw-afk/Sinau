@@ -5,7 +5,7 @@
                 📜 Riwayat Chat
             </h2>
             <a href="{{ route('chat.new') }}"
-               class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition">
+               class="inline-flex items-center px-4 py-2 bg-accent text-white text-sm rounded-lg hover:bg-primary transition shadow-md shadow-accent/20">
                 ✨ Chat Baru
             </a>
         </div>
@@ -20,7 +20,7 @@
                         <div class="text-5xl mb-4">💬</div>
                         <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300">Belum ada riwayat chat</h3>
                         <p class="text-sm text-gray-400 mt-1">Mulai chat baru untuk memulai belajar!</p>
-                        <a href="{{ route('chat.index') }}" class="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm">
+                        <a href="{{ route('chat.index') }}" class="mt-4 px-6 py-2 bg-accent text-white rounded-lg hover:bg-primary transition text-sm shadow-md shadow-accent/20">
                             Mulai Belajar
                         </a>
                     </div>
@@ -29,19 +29,19 @@
                         @foreach($sessionData as $session)
                         <li>
                             <a href="{{ route('chat.load', $session['session_id']) }}"
-                               class="flex items-center gap-4 p-5 hover:bg-indigo-50 dark:hover:bg-gray-700 transition group">
-                                <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white">
+                               class="flex items-center gap-4 p-5 hover:bg-accent/5 dark:hover:bg-gray-700 transition group">
+                                <div class="flex-shrink-0 w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white">
                                     💬
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-800 dark:text-gray-100 truncate group-hover:text-indigo-600">
+                                    <p class="text-sm font-medium text-gray-800 dark:text-gray-100 truncate group-hover:text-accent">
                                         {{ $session['preview'] }}
                                     </p>
                                     <p class="text-xs text-gray-400 mt-0.5">
                                         {{ \Carbon\Carbon::parse($session['created_at'])->diffForHumans() }}
                                     </p>
                                 </div>
-                                <svg class="w-4 h-4 text-gray-400 group-hover:text-indigo-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 text-gray-400 group-hover:text-accent transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                 </svg>
                             </a>
