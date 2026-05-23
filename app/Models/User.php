@@ -30,6 +30,7 @@ class User extends Authenticatable
         'discord_id',
         'apple_id',
         'avatar',
+        'kelas',
     ];
 
     /**
@@ -60,5 +61,29 @@ class User extends Authenticatable
     public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(\App\Models\Task::class);
+    }
+
+    /**
+     * Get subjects for this user's kelas.
+     */
+    public function subjects()
+    {
+        return \App\Models\Subject::where('kelas', $this->kelas)->orderBy('sort_order')->get();
+    }
+
+    /**
+     * Get materials for this user's kelas.
+     */
+    public function materials()
+    {
+        return \App\Models\Material::where('kelas', $this->kelas)->get();
+    }
+
+    /**
+     * Get readable kelas label.
+     */
+    public function getKelasLabelAttribute(): string
+    {
+        return \App\Models\Subject::kelasLabel($this->kelas ?? '');
     }
 }

@@ -50,21 +50,17 @@ class ChatController extends Controller
             'parts' => [['text' => $h->message]],
         ])->values()->toArray();
 
-        // Call Gemini API
-        $apiKey = config('services.gemini.api_key');
-        $response = Http::withHeaders(['Content-Type' => 'application/json'])
-            ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$apiKey}", [
-                'system_instruction' => [
-                    'parts' => [['text' => 'Kamu adalah asisten belajar AI bernama "Sinau". Tugasmu membantu pelajar Indonesia belajar dengan cara yang menyenangkan, jelas, dan mudah dipahami. Selalu gunakan Bahasa Indonesia yang ramah dan supportif. Jika relevan, berikan contoh nyata, analogi, atau penjelasan bertahap.']]
-                ],
-                'contents' => $contents,
-            ]);
-
-        if ($response->failed()) {
-            return response()->json(['error' => 'Gagal menghubungi AI. Cek API key Anda.'], 500);
+        // Call Gemini API using the robust GeminiService with fallback and rotation features
+        try {
+            $geminiService = app(\App\Services\GeminiService::class);
+            $systemInstruction = 'Kamu adalah asisten belajar AI bernama "Sinau". Tugasmu membantu pelajar Indonesia belajar dengan cara yang menyenangkan, jelas, dan mudah dipahami. Selalu gunakan Bahasa Indonesia yang ramah dan supportif. Jika relevan, berikan contoh nyata, analogi, atau penjelasan bertahap.';
+            $aiText = $geminiService->generateContent($contents, $systemInstruction);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::critical("Gemini Chat Failure: " . $e->getMessage());
+            return response()->json([
+                'error' => 'Server sedang sangat padat karena kuota limit AI terlampaui. Silakan coba beberapa saat lagi atau hubungi administrator.'
+            ], 500);
         }
-
-        $aiText = $response->json('candidates.0.content.parts.0.text') ?? 'Maaf, saya tidak bisa memberikan respons saat ini.';
 
         // Save AI response
         ChatHistory::create([

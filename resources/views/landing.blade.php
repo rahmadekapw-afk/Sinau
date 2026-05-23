@@ -33,7 +33,7 @@
                     <div class="w-20 h-20 rounded-xl flex items-center justify-center bg-transparent group-hover:scale-105 transition-transform">
                         <img src="{{ asset('images/logo.png') }}" alt="Sinau Logo" class="w-full h-full object-contain" style="filter: invert(15%) sepia(95%) saturate(3000%) hue-rotate(350deg) brightness(85%) contrast(100%);">
                     </div>
-                    <span class="font-bold text-4xl tracking-tight text-primary mt-1">Sinau.</span>
+                    <span class="font-extrabold text-4xl tracking-tight text-[#B91C1C] mt-1">Sinau.</span>
                 </a>
 
                 <!-- Nav Links -->
@@ -44,10 +44,10 @@
 
                 <div class="flex items-center gap-4">
                     @auth
-                        <a href="{{ route('dashboard') }}" class="bg-accent hover:opacity-90 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition shadow-sm">Dashboard</a>
+                        <a href="{{ route('dashboard') }}" class="bg-[#B91C1C] hover:opacity-90 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition shadow-sm">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-slate-600 hover:text-accent transition hidden sm:block">Masuk</a>
-                        <a href="{{ route('register') }}" class="bg-accent hover:opacity-90 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition shadow-sm">Daftar Gratis</a>
+                        <a href="{{ route('login') }}" class="text-sm font-bold text-slate-600 hover:text-[#B91C1C] transition hidden sm:block">Masuk</a>
+                        <a href="{{ route('register') }}" class="bg-[#B91C1C] hover:opacity-90 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition shadow-sm">Daftar Gratis</a>
                     @endauth
                 </div>
             </div>
@@ -64,9 +64,9 @@
                     Powered by Gemini AI
                 </div>
                 
-                <h1 class="font-extrabold tracking-tight text-primary text-5xl sm:text-6xl lg:text-7xl leading-[1.1]">
+                <h1 class="font-extrabold tracking-tight text-slate-900 text-5xl sm:text-6xl lg:text-7xl leading-[1.1]">
                     Belajar Lebih Cerdas <br class="hidden lg:block">
-                    dengan <span class="text-accent">Sinau</span>
+                    dengan <span class="text-[#B91C1C]">Sinau</span>
                 </h1>
                 
                 <p class="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
@@ -229,17 +229,17 @@
     </section>
 
     <!-- CTA -->
-    <section class="py-20 bg-primary text-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-accent/5 mix-blend-overlay"></div>
+    <section class="py-24 bg-[#B91C1C] text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-white/5 mix-blend-overlay"></div>
         <div class="max-w-4xl mx-auto px-4 sm:px-6">
             <h2 class="text-3xl font-bold text-white sm:text-4xl mb-6">Siap Belajar Lebih Cerdas?</h2>
-            <p class="text-lg text-slate-300 mb-10">Bergabung sekarang dan rasakan pengalaman belajar yang dipersonalisasi oleh AI terdepan.</p>
+            <p class="text-lg text-white/80 mb-10">Bergabung sekarang dan rasakan pengalaman belajar yang dipersonalisasi oleh AI terdepan.</p>
             @auth
-                <a href="{{ route('chat.index') }}" class="inline-block bg-white text-primary hover:bg-slate-100 px-8 py-4 rounded-xl text-base font-bold transition shadow-lg hover:-translate-y-0.5">
+                <a href="{{ route('chat.index') }}" class="inline-block bg-white text-[#B91C1C] hover:bg-slate-100 px-8 py-4 rounded-xl text-base font-bold transition shadow-lg hover:-translate-y-0.5">
                     🤖 Buka Chat AI
                 </a>
             @else
-                <a href="{{ route('register') }}" class="inline-block bg-accent hover:bg-red-700 text-white px-8 py-4 rounded-xl text-base font-bold transition shadow-lg hover:-translate-y-0.5">
+                <a href="{{ route('register') }}" class="inline-block bg-white text-[#B91C1C] hover:bg-slate-100 px-8 py-4 rounded-xl text-base font-bold transition shadow-lg hover:-translate-y-0.5">
                     Daftar Gratis Sekarang →
                 </a>
             @endauth

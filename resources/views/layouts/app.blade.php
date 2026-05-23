@@ -14,13 +14,24 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-50 flex">
+    <body class="font-sans antialiased" x-data="{ mobileMenuOpen: false }">
+        <div class="min-h-screen bg-gray-50 flex overflow-hidden">
             <!-- Sidebar -->
             @include('layouts.sidebar')
 
             <!-- Main Content -->
             <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+                
+                <!-- Mobile Header -->
+                <header class="md:hidden bg-white border-b border-gray-100 flex items-center justify-between px-4 h-16 shrink-0 z-30">
+                    <div class="flex items-center gap-3">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-8 h-8 object-contain" style="filter: invert(15%) sepia(95%) saturate(3000%) hue-rotate(350deg) brightness(85%) contrast(100%);">
+                        <span class="font-bold text-xl text-primary">Sinau</span>
+                    </div>
+                    <button @click="mobileMenuOpen = true" class="p-2 rounded-lg text-gray-500 hover:bg-gray-50">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                </header>
 
                 <!-- Page Heading -->
                 @isset($header)

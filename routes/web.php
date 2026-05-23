@@ -14,7 +14,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $todayTasks = \App\Models\Task::forUser(auth()->id())->today()->orderBy('due_time')->get();
         $upcomingTasks = \App\Models\Task::forUser(auth()->id())->upcoming()->limit(5)->get();
-        return view('dashboard', compact('todayTasks', 'upcomingTasks'));
+        $subjects = auth()->user()->kelas
+            ? \App\Models\Subject::forKelas(auth()->user()->kelas)->withCount('materials')->orderBy('sort_order')->limit(4)->get()
+            : collect();
+        return view('dashboard', compact('todayTasks', 'upcomingTasks', 'subjects'));
     })->name('dashboard');
 
     // Tasks — Kanban board (CRUD)
@@ -60,6 +63,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat/new', [ChatController::class, 'newSession'])->name('chat.new');
     Route::get('/chat/history', [ChatController::class, 'history'])->name('chat.history');
     Route::get('/chat/load/{sessionId}', [ChatController::class, 'loadSession'])->name('chat.load');
+
+    // Materials — Materi belajar berdasarkan kelas
+    Route::get('/materials', [\App\Http\Controllers\MaterialController::class, 'index'])->name('materials.index');
+    Route::get('/materials/pilih-kelas', [\App\Http\Controllers\MaterialController::class, 'pilihKelas'])->name('materials.pilih-kelas');
+    Route::post('/materials/pilih-kelas', [\App\Http\Controllers\MaterialController::class, 'simpanKelas'])->name('materials.simpan-kelas');
+    Route::get('/materials/subject/{subject}', [\App\Http\Controllers\MaterialController::class, 'subject'])->name('materials.subject');
+    Route::get('/materials/{material}', [\App\Http\Controllers\MaterialController::class, 'show'])->name('materials.show');
 });
 
 require __DIR__.'/auth.php';

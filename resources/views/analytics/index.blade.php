@@ -4,7 +4,7 @@
             <h2 class="font-bold text-2xl text-gray-800 dark:text-gray-200 leading-tight flex items-center gap-2">
                 Analytics & Laporan <span class="text-3xl">📊</span>
             </h2>
-            <button style="background-color: #7F1D1D;" class="hover:opacity-90 text-white px-5 py-2.5 rounded-xl font-semibold shadow-md transition-all flex items-center gap-2 text-sm border-b-4 border-[#450A0A]">
+            <button style="background-color: #B91C1C;" class="hover:opacity-90 text-white px-5 py-2.5 rounded-xl font-semibold shadow-md transition-all flex items-center gap-2 text-sm border-b-4 border-[#991B1B]">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 Download Laporan (PDF)
             </button>
@@ -14,22 +14,20 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            {{-- AI Insight Card 3D --}}
-            <div style="background: linear-gradient(135deg, #450A0A 0%, #B91C1C 100%); box-shadow: 0 10px 0 #450A0A, 0 20px 25px -5px rgba(0, 0, 0, 0.4);" 
-                 class="rounded-3xl p-8 text-white relative overflow-hidden border-t border-white/20 transform transition-all hover:-translate-y-1">
-                <div class="relative z-10 flex items-start gap-5">
-                    <div class="w-16 h-16 bg-white/10 rounded-2xl backdrop-blur-md flex items-center justify-center text-3xl shrink-0 shadow-inner border border-white/20">
+            {{-- AI Insight Card (Clean Flat) --}}
+            <div style="background: linear-gradient(135deg, #B91C1C 0%, #EF4444 100%);" class="rounded-2xl p-6 text-white shadow-lg relative overflow-hidden border-l-8 border-[#991B1B]">
+                <div class="relative z-10 flex items-start gap-4">
+                    <div class="w-12 h-12 bg-white/10 rounded-xl backdrop-blur-sm flex items-center justify-center text-2xl shrink-0 shadow-inner">
                         🤖
                     </div>
                     <div>
-                        <h3 class="font-black text-xl mb-1 text-white drop-shadow-md tracking-tight uppercase">AI INSIGHT</h3>
-                        <p class="text-white/95 leading-relaxed font-bold italic text-lg">
-                            "{{ $insight }}"
+                        <h3 class="font-bold text-lg mb-1 text-white uppercase tracking-tight">AI Insight</h3>
+                        <p class="text-white/90 leading-relaxed font-medium italic">
+                            "{{ $insight ?? 'Analisis belajarmu akan muncul di sini setelah kamu lebih sering berinteraksi dengan AI.' }}"
                         </p>
                     </div>
                 </div>
-                <div class="absolute -right-10 -top-10 w-48 h-48 bg-white/5 rounded-full blur-3xl"></div>
-                <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-black/10 rounded-full blur-2xl"></div>
+                <div class="absolute -right-10 -top-10 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
             </div>
 
             {{-- Top Stats Row --}}
@@ -48,7 +46,7 @@
                 </div>
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                     <div class="text-gray-500 text-sm font-semibold mb-2">Tugas Bantuan AI</div>
-                    <div class="text-3xl font-bold text-accent">{{ $aiGeneratedTasks }}</div>
+                    <div class="text-3xl font-bold text-[#B91C1C]">{{ $aiGeneratedTasks }}</div>
                 </div>
             </div>
 
@@ -61,7 +59,7 @@
                         <div class="relative w-40 h-40">
                             <svg class="w-full h-full" viewBox="0 0 36 36">
                                 <path class="text-gray-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" />
-                                <path class="text-accent" stroke-dasharray="{{ $completionRate }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                                <path class="text-[#B91C1C]" stroke-dasharray="{{ $completionRate }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
                             </svg>
                             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
                                 <span class="text-3xl font-bold text-gray-800">{{ $completionRate }}%</span>
@@ -80,11 +78,11 @@
                         
                         <div>
                             <div class="flex justify-between text-sm mb-1">
-                                <span class="font-semibold text-red-600">🔴 Deadline Tugas</span>
+                                <span class="font-semibold text-[#B91C1C]">🔴 Deadline Tugas</span>
                                 <span class="text-gray-500">{{ $typeStats['deadline'] }}</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-2.5">
-                                <div class="bg-red-500 h-2.5 rounded-full" style="width: {{ ($typeStats['deadline'] / $totalTypeTasks) * 100 }}%"></div>
+                                <div class="bg-[#B91C1C] h-2.5 rounded-full" style="width: {{ ($typeStats['deadline'] / $totalTypeTasks) * 100 }}%"></div>
                             </div>
                         </div>
                         
@@ -100,11 +98,11 @@
                         
                         <div>
                             <div class="flex justify-between text-sm mb-1">
-                                <span class="font-semibold text-accent">🤖 Jadwal Belajar AI</span>
+                                <span class="font-semibold text-[#B91C1C]">🤖 Jadwal Belajar AI</span>
                                 <span class="text-gray-500">{{ $typeStats['study'] }}</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-2.5">
-                                <div class="bg-accent h-2.5 rounded-full" style="width: {{ ($typeStats['study'] / $totalTypeTasks) * 100 }}%"></div>
+                                <div class="bg-[#B91C1C] h-2.5 rounded-full" style="width: {{ ($typeStats['study'] / $totalTypeTasks) * 100 }}%"></div>
                             </div>
                         </div>
                     </div>
@@ -120,7 +118,7 @@
                         <div class="space-y-4">
                             @foreach($tasksBySubject as $index => $subject)
                                 @php
-                                    $colors = ['bg-accent', 'bg-primary', 'bg-red-700', 'bg-rose-800', 'bg-maroon-900'];
+                                    $colors = ['bg-[#B91C1C]', 'bg-[#DC2626]', 'bg-[#EF4444]', 'bg-[#F87171]', 'bg-[#FECACA]'];
                                     $color = $colors[$index % count($colors)];
                                     $maxCount = $tasksBySubject->first()->count;
                                 @endphp
@@ -150,7 +148,7 @@
                         @foreach($last7Days as $index => $day)
                             <div class="flex flex-col items-center gap-2 group">
                                 <div class="relative w-8 bg-gray-100 rounded-t-lg h-36 flex items-end">
-                                    <div class="w-full bg-accent rounded-t-lg transition-all group-hover:bg-primary" style="height: {{ ($activityData[$index] / $maxActivity) * 100 }}%"></div>
+                                    <div class="w-full bg-[#B91C1C] rounded-t-lg transition-all group-hover:bg-[#EF4444]" style="height: {{ ($activityData[$index] / $maxActivity) * 100 }}%"></div>
                                     {{-- Tooltip --}}
                                     <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                                         {{ $activityData[$index] }}

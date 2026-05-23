@@ -37,6 +37,14 @@ return [
 
     'gemini' => [
         'api_key' => env('GEMINI_API_KEY'),
+        'api_keys' => env('GEMINI_API_KEYS') 
+            ? array_filter(array_map('trim', explode(',', env('GEMINI_API_KEYS'))))
+            : array_filter([env('GEMINI_API_KEY')]),
+        'models' => [
+            'gemini-2.5-flash',
+            'gemini-2.0-flash',
+            'gemini-1.5-flash',
+        ],
     ],
 
     'google' => [

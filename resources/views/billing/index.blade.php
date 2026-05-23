@@ -88,46 +88,45 @@
                     </button>
                 </div>
 
-                {{-- Pro Plan (Highlighted) --}}
-                <div style="background: linear-gradient(135deg, #450A0A 0%, #B91C1C 100%);" class="rounded-3xl p-8 shadow-xl border-2 border-[#450A0A] flex flex-col relative transform md:-translate-y-4 text-white">
-                    <div style="background-color: #B91C1C;" class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white px-4 py-1 rounded-full text-xs font-bold tracking-wide uppercase border border-[#450A0A]">
+                {{-- Pro Plan (Clean Flat) --}}
+                <div style="background: linear-gradient(135deg, #450A0A 0%, #B91C1C 100%);" 
+                     class="rounded-3xl p-8 border-l-8 border-[#450A0A] flex flex-col relative text-white">
+                    
+                    <div style="background-color: #B91C1C;" 
+                         class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white px-4 py-1 rounded-full text-xs font-bold tracking-wide uppercase border border-white/20">
                         Most Popular (Pelajar)
                     </div>
                     
                     <div class="mb-6">
-                        <h3 class="text-lg font-bold text-white mb-2">🚀 Pro Student</h3>
+                        <h3 class="text-xl font-bold text-white mb-2 uppercase tracking-tight">🚀 Pro Student</h3>
                         <div class="flex items-baseline gap-1">
-                            <span class="text-xl text-white/50 line-through mr-1">Rp 49k</span>
+                            <span class="text-xl text-white/50 line-through mr-1 font-bold">Rp 49k</span>
                             <span class="text-4xl font-black text-white">Rp 29k</span>
-                            <span class="text-white/70 font-medium">/ bln</span>
+                            <span class="text-white/70 font-medium italic">/ bln</span>
                         </div>
-                        <p class="text-sm text-white/80 mt-3">Untuk pelajar yang ingin produktivitas maksimal.</p>
                     </div>
                     
                     <ul class="space-y-4 mb-8 flex-1">
-                        <li class="flex items-start gap-3 text-sm text-white/90 font-medium">
+                        <li class="flex items-start gap-3 text-sm text-white/90 font-bold">
                             <svg class="w-5 h-5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            <span>Chat AI Tanpa Batas (Unlimited)</span>
+                            <span>Chat AI Tanpa Batas</span>
                         </li>
-                        <li class="flex items-start gap-3 text-sm text-white/90 font-medium">
+                        <li class="flex items-start gap-3 text-sm text-white/90 font-bold">
                             <svg class="w-5 h-5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            <span>Akses Fitur Import Data (PDF/Word)</span>
+                            <span>Akses Fitur Import Data</span>
                         </li>
-                        <li class="flex items-start gap-3 text-sm text-white/90 font-medium">
+                        <li class="flex items-start gap-3 text-sm text-white/90 font-bold">
                             <svg class="w-5 h-5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            <span>Alat Konversi Word ke PDF</span>
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-white/90 font-medium">
-                            <svg class="w-5 h-5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            <span>Prioritas Server AI (Lebih Cepat)</span>
+                            <span>Prioritas Server Utama</span>
                         </li>
                     </ul>
                     
                     <form action="{{ route('billing.process') }}" method="POST">
                         @csrf
                         <input type="hidden" name="package" value="pro">
-                        <button type="submit" style="background-color: #B91C1C;" class="w-full py-3 rounded-xl font-bold text-white shadow-lg hover:opacity-90 transition-all flex justify-center items-center gap-2 border-b-4 border-[#450A0A]">
-                            Mulai Berlangganan Pro
+                        <button type="submit" style="background-color: #B91C1C;" 
+                                class="w-full py-3 rounded-xl font-bold text-white hover:opacity-95 transition-all flex justify-center items-center gap-2 border-b-4 border-[#450A0A]">
+                            MULAI BERLANGGANAN PRO
                         </button>
                     </form>
                 </div>

@@ -39,6 +39,26 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Kelas -->
+        <div class="mt-4">
+            <x-input-label for="kelas" :value="__('Kelas')" />
+            <select id="kelas" name="kelas" required
+                class="block mt-1 w-full border-gray-300 focus:border-[#B91C1C] focus:ring-[#B91C1C] rounded-md shadow-sm">
+                <option value="">-- Pilih Kelas --</option>
+                <optgroup label="SMP">
+                    <option value="7-smp" {{ old('kelas') === '7-smp' ? 'selected' : '' }}>Kelas 7 SMP</option>
+                    <option value="8-smp" {{ old('kelas') === '8-smp' ? 'selected' : '' }}>Kelas 8 SMP</option>
+                    <option value="9-smp" {{ old('kelas') === '9-smp' ? 'selected' : '' }}>Kelas 9 SMP</option>
+                </optgroup>
+                <optgroup label="SMA">
+                    <option value="10-sma" {{ old('kelas') === '10-sma' ? 'selected' : '' }}>Kelas 10 SMA</option>
+                    <option value="11-sma" {{ old('kelas') === '11-sma' ? 'selected' : '' }}>Kelas 11 SMA</option>
+                    <option value="12-sma" {{ old('kelas') === '12-sma' ? 'selected' : '' }}>Kelas 12 SMA</option>
+                </optgroup>
+            </select>
+            <x-input-error :messages="$errors->get('kelas')" class="mt-2" />
+        </div>
+
         <div class="flex items-center justify-center mt-10">
             <x-primary-button>
                 {{ __('Daftar Sekarang') }}
@@ -105,7 +125,7 @@
         <div class="mt-10 pt-6 border-t border-slate-100 text-center">
             <p class="text-sm text-slate-500">
                 Sudah punya akun? 
-                <a class="font-bold text-accent hover:underline focus:outline-none focus:ring-2 focus:ring-accent rounded-md transition duration-150" href="{{ route('login') }}">
+                <a class="font-bold text-[#B91C1C] hover:underline focus:outline-none focus:ring-2 focus:ring-[#B91C1C] rounded-md transition duration-150" href="{{ route('login') }}">
                     Masuk di sini
                 </a>
             </p>

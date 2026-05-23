@@ -33,21 +33,22 @@
                 </div>
             @endif
 
-            {{-- Search Header --}}
-            <div style="background: linear-gradient(135deg, #450A0A 0%, #B91C1C 100%);" class="rounded-3xl p-10 md:p-14 shadow-xl flex flex-col items-center text-center relative overflow-hidden border-b-8 border-[#450A0A]">
+            {{-- Search Header (Clean Flat) --}}
+            <div style="background: linear-gradient(135deg, #450A0A 0%, #B91C1C 100%);" 
+                 class="rounded-3xl p-10 md:p-14 shadow-xl flex flex-col items-center text-center relative overflow-hidden border-l-8 border-[#450A0A]">
                 <div class="absolute inset-0 bg-black/10 pointer-events-none"></div>
-                <h3 class="text-3xl md:text-4xl font-black text-white mb-4 relative z-10">Halo! Ada yang bisa kami bantu?</h3>
+                <h3 class="text-3xl md:text-4xl font-black text-white mb-4 relative z-10 uppercase tracking-tight">Halo! Ada yang bisa kami bantu?</h3>
                 <p class="text-white/80 mb-8 relative z-10 max-w-lg font-medium">Temukan jawaban atas pertanyaan Anda, atau hubungi asisten cerdas kami.</p>
                 
                 <div class="relative w-full max-w-2xl z-10">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
-                    <input type="text" class="w-full pl-12 pr-4 py-4 rounded-2xl border-none shadow-lg focus:ring-4 focus:ring-accent/50 text-gray-800 text-lg" placeholder="Cari panduan (Cth: cara ubah Word ke PDF)...">
+                    <input type="text" class="w-full pl-12 pr-4 py-4 rounded-2xl border-none shadow-lg focus:ring-4 focus:ring-accent/50 text-gray-800 text-lg font-medium" placeholder="Cari panduan cepat...">
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mt-8">
                 
                 {{-- FAQ Section (Left Column) --}}
                 <div class="lg:col-span-2 space-y-6">
@@ -130,17 +131,17 @@
                 <div class="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl opacity-50 -mr-20 -mt-20 pointer-events-none"></div>
                 <div class="relative z-10 max-w-3xl mx-auto">
                     <div class="text-center mb-10">
-                        <div class="w-16 h-16 bg-accent/10 text-accent rounded-full flex items-center justify-center text-3xl mx-auto mb-4">🐛</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2 text-primary">Masih Belum Menemukan Jawaban?</h3>
-                        <p class="text-sm text-gray-500">Kirim tiket laporan bug atau kendala pembayaran ke tim teknisi manusia kami.</p>
+                        <div class="w-16 h-16 bg-accent/10 text-accent rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner">🐛</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2 uppercase tracking-tight">Butuh Bantuan Lebih?</h3>
+                        <p class="text-sm text-gray-500 font-medium">Kirim tiket laporan bug atau kendala pembayaran ke tim teknisi kami.</p>
                     </div>
 
                     <form action="{{ route('support.process') }}" method="POST" class="space-y-6">
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block font-bold text-gray-700 mb-2 text-sm">Topik Kendala</label>
-                                <select name="category" class="w-full border-gray-300 focus:border-accent focus:ring-accent rounded-xl shadow-sm py-3 px-4 bg-gray-50" required>
+                                <label class="block font-bold text-gray-700 mb-2 text-sm uppercase tracking-widest">Topik Kendala</label>
+                                <select name="category" class="w-full border-gray-300 focus:border-accent focus:ring-accent rounded-xl shadow-sm py-3 px-4 bg-gray-50 font-medium" required>
                                     <option value="" disabled selected>Pilih Kategori...</option>
                                     <option value="bug">Laporan Bug / Error Web</option>
                                     <option value="billing">Masalah Pembayaran / Koin</option>
@@ -149,21 +150,20 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block font-bold text-gray-700 mb-2 text-sm">Alamat Email Balasan</label>
-                                <input type="email" value="{{ Auth::user()->email }}" class="w-full border-gray-300 rounded-xl shadow-sm py-3 px-4 bg-gray-100 text-gray-500 cursor-not-allowed" readonly>
-                                <p class="text-[10px] text-gray-400 mt-1">Kami akan membalas ke email yang terdaftar ini.</p>
+                                <label class="block font-bold text-gray-700 mb-2 text-sm uppercase tracking-widest">Email Balasan</label>
+                                <input type="email" value="{{ Auth::user()->email }}" class="w-full border-gray-300 rounded-xl shadow-sm py-3 px-4 bg-gray-100 text-gray-500 cursor-not-allowed font-medium" readonly>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block font-bold text-gray-700 mb-2 text-sm">Detail Pesan / Kendala</label>
-                            <textarea name="message" rows="4" class="w-full border-gray-300 focus:border-accent focus:ring-accent rounded-xl shadow-sm py-3 px-4 bg-gray-50" placeholder="Jelaskan secara detail masalah yang Anda alami..." required></textarea>
+                            <label class="block font-bold text-gray-700 mb-2 text-sm uppercase tracking-widest">Detail Pesan</label>
+                            <textarea name="message" rows="4" class="w-full border-gray-300 focus:border-accent focus:ring-accent rounded-xl shadow-sm py-3 px-4 bg-gray-50 font-medium" placeholder="Jelaskan secara detail masalah yang Anda alami..." required></textarea>
                         </div>
 
                         <div class="text-center pt-2">
                             <button type="submit" style="background-color: #B91C1C;" class="hover:opacity-95 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 w-full md:w-auto mx-auto border-b-4 border-[#450A0A]">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-                                Kirim Laporan ke Admin
+                                KIRIM LAPORAN SEKARANG
                             </button>
                         </div>
                     </form>

@@ -15,8 +15,8 @@ export default {
                 sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary: '#450A0A', // Hitam-Kemerahan pengganti biru
-                accent: '#7F1D1D'  // Merah Maroon yang lebih gelap
+                primary: '#B91C1C', // Merah Cerah Utama
+                accent: '#EF4444'   // Merah Terang untuk Aksen
             }
         },
     },
