@@ -8,24 +8,38 @@
      x-transition:leave-start="opacity-100"
      x-transition:leave-end="opacity-0"></div>
 
-<aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed inset-y-0 left-0 z-50 transition-transform duration-300 transform md:translate-x-0"
-       :class="mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
+<aside class="bg-white border-r border-gray-200 flex flex-col fixed inset-y-0 left-0 z-50 transition-all duration-300 transform md:translate-x-0"
+       :class="[
+           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+           sidebarCollapsed ? 'w-20' : 'w-64'
+       ]">
     
     <!-- Header Section -->
-    <div class="flex items-center justify-between h-20 border-b border-gray-100 px-6 shrink-0 bg-white">
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 font-bold text-2xl text-[#B91C1C]">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-10 h-10 object-contain" style="filter: invert(15%) sepia(95%) saturate(3000%) hue-rotate(350deg) brightness(85%) contrast(100%);">
-            <span>Sinau</span>
+    <div class="flex items-center h-20 border-b border-gray-100 shrink-0 bg-white transition-all duration-300"
+         :class="sidebarCollapsed ? 'px-4 justify-center' : 'px-6 justify-between'">
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 font-bold text-3xl text-[#B91C1C] overflow-hidden shrink-0">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12 object-contain shrink-0" style="filter: invert(15%) sepia(95%) saturate(3000%) hue-rotate(350deg) brightness(85%) contrast(100%);">
+            <span x-show="!sidebarCollapsed" x-transition.opacity.duration.300 class="font-bold text-3xl text-[#B91C1C]">Sinau</span>
         </a>
-        <button @click="mobileMenuOpen = false" class="md:hidden p-2 rounded-lg text-gray-400 hover:bg-gray-50">
+        <button @click="mobileMenuOpen = false" class="md:hidden p-2 rounded-lg text-gray-400 hover:bg-gray-50 shrink-0">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <!-- Toggle Collapse Button (Desktop Only) -->
+        <button @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('sidebar_collapsed', sidebarCollapsed)" 
+                class="hidden md:flex p-2 rounded-lg text-gray-400 hover:bg-red-50 hover:text-[#B91C1C] transition-colors shrink-0">
+            <svg x-show="!sidebarCollapsed" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+            </svg>
+            <svg x-show="sidebarCollapsed" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+            </svg>
         </button>
     </div>
 
     <!-- Navigation Links -->
     <div class="flex-1 overflow-y-auto bg-white py-6">
-        <nav class="px-4 space-y-1">
-            <div class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-4 px-3">Menu Utama</div>
+        <nav class="px-4 space-y-1 transition-all duration-300" :class="sidebarCollapsed ? 'px-2' : 'px-4'">
+            <div x-show="!sidebarCollapsed" x-transition.opacity.duration.300 class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-4 px-3 whitespace-nowrap">Menu Utama</div>
             
             @php
                 $navItems = [
@@ -43,25 +57,31 @@
 
             @foreach($navItems as $item)
             <a href="{{ route($item['route']) }}" 
-               class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 font-bold text-sm {{ request()->routeIs($item['route']) ? 'bg-[#B91C1C] text-white shadow-md shadow-[#B91C1C]/20' : 'text-gray-500 hover:bg-red-50 hover:text-[#B91C1C]' }}">
+               class="flex items-center gap-3 py-2.5 rounded-xl transition-all duration-200 font-bold text-sm shrink-0 overflow-hidden {{ request()->routeIs($item['route']) ? 'bg-[#B91C1C] text-white shadow-md shadow-[#B91C1C]/20' : 'text-gray-500 hover:bg-red-50 hover:text-[#B91C1C]' }}"
+               :class="sidebarCollapsed ? 'justify-center px-2' : 'px-4'"
+               title="{{ $item['label'] }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $item['icon'] }}"/></svg>
-                {{ $item['label'] }}
+                <span x-show="!sidebarCollapsed" x-transition.opacity.duration.300 class="whitespace-nowrap">{{ $item['label'] }}</span>
             </a>
             @endforeach
         </nav>
     </div>
 
     <!-- Logout -->
-    <div class="p-4 border-t border-gray-100 bg-white">
+    <div class="border-t border-gray-100 bg-white transition-all duration-300"
+         :class="sidebarCollapsed ? 'p-2' : 'p-4'">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#B91C1C] hover:bg-red-50 font-bold transition">
-                <svg class="w-5 h-5 text-[#B91C1C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                Logout
+            <button type="submit" 
+                    class="w-full flex items-center gap-3 py-2.5 rounded-xl text-[#B91C1C] hover:bg-red-50 font-bold transition shrink-0 overflow-hidden"
+                    :class="sidebarCollapsed ? 'justify-center px-2' : 'px-4'">
+                <svg class="w-5 h-5 text-[#B91C1C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                <span x-show="!sidebarCollapsed" x-transition.opacity.duration.300 class="whitespace-nowrap">Logout</span>
             </button>
         </form>
     </div>
 </aside>
 
 <!-- Desktop Spacer -->
-<div class="w-64 hidden md:block shrink-0"></div>
+<div class="hidden md:block shrink-0 transition-all duration-300"
+     :class="sidebarCollapsed ? 'w-20' : 'w-64'"></div>

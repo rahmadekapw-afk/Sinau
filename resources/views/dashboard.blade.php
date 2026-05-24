@@ -1,9 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Dashboard
-        </h2>
-    </x-slot>
+  
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -23,22 +19,6 @@
                 </div>
                 <div class="absolute -right-10 -top-10 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
                 <div class="absolute -right-5 -bottom-5 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
-            </div>
-
-            {{-- AI Insight Card (Clean Flat) --}}
-            <div style="background: linear-gradient(135deg, #B91C1C 0%, #EF4444 100%);" class="rounded-2xl p-6 text-white shadow-lg relative overflow-hidden border-l-8 border-[#991B1B]">
-                <div class="relative z-10 flex items-start gap-4">
-                    <div class="w-12 h-12 bg-white/10 rounded-xl backdrop-blur-sm flex items-center justify-center text-2xl shrink-0">
-                        🤖
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg mb-1 text-white uppercase tracking-tight">AI Insight</h3>
-                        <p class="text-white/90 leading-relaxed font-medium">
-                            "{{ $insight ?? 'Tetap semangat belajar! Gunakan AI untuk mempermudah pemahaman materimu hari ini.' }}"
-                        </p>
-                    </div>
-                </div>
-                <div class="absolute -right-10 -top-10 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
             </div>
 
             {{-- Today's Schedule Widget --}}
