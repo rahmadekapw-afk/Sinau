@@ -60,9 +60,22 @@ Route::middleware('auth')->group(function () {
     // Chat AI routes
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
+    Route::get('/chat/send', function () {
+        return redirect()->route('chat.index');
+    });
     Route::get('/chat/new', [ChatController::class, 'newSession'])->name('chat.new');
     Route::get('/chat/history', [ChatController::class, 'history'])->name('chat.history');
     Route::get('/chat/load/{sessionId}', [ChatController::class, 'loadSession'])->name('chat.load');
+
+    // Floating Chatbot routes
+    Route::post('/chatbot/send', [ChatController::class, 'chatbotSend'])->name('chatbot.send');
+    Route::get('/chatbot/send', function () {
+        return redirect()->route('dashboard');
+    });
+
+    // AI Quiz Generator routes
+    Route::get('/quiz', [\App\Http\Controllers\QuizController::class, 'index'])->name('quiz.index');
+    Route::post('/quiz/generate', [\App\Http\Controllers\QuizController::class, 'generate'])->name('quiz.generate');
 
     // Materials — Materi belajar berdasarkan kelas
     Route::get('/materials', [\App\Http\Controllers\MaterialController::class, 'index'])->name('materials.index');

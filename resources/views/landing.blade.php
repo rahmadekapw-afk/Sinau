@@ -61,7 +61,7 @@
             <div class="flex-1 text-center lg:text-left">
                 <div class="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-accent/5 border border-accent/10 text-accent text-xs font-bold tracking-wide shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-                    Powered by Gemini AI
+                    Powered by OpenRouter & Ollama
                 </div>
                 
                 <h1 class="font-extrabold tracking-tight text-slate-900 text-5xl sm:text-6xl lg:text-7xl leading-[1.1]">

@@ -145,12 +145,13 @@
                     <p class="text-sm text-gray-500">Lihat kembali sesi belajar sebelumnya kapan saja.</p>
                 </a>
 
-                <div class="group bg-white rounded-2xl p-6 shadow-sm border border-gray-100 opacity-70">
+                <a href="{{ route('quiz.index') }}"
+                   class="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
                     <div class="w-12 h-12 bg-[#B91C1C]/10 rounded-xl flex items-center justify-center text-2xl mb-4 text-[#B91C1C]">📝</div>
                     <h3 class="font-bold text-[#B91C1C] text-lg mb-1">Quiz Generator</h3>
-                    <p class="text-sm text-gray-500">Segera hadir — latihan soal otomatis dari AI.</p>
-                    <span class="inline-block mt-2 text-xs bg-[#B91C1C]/10 text-[#B91C1C] px-2 py-0.5 rounded-full font-medium">Coming Soon</span>
-                </div>
+                    <p class="text-sm text-gray-500">Latih pemahamanmu dengan kuis interaktif buatan AI.</p>
+                    <span class="inline-block mt-2 text-xs bg-red-100 text-[#B91C1C] px-2.5 py-0.5 rounded-full font-bold">Mulai Kuis</span>
+                </a>
             </div>
 
             {{-- Tips --}}

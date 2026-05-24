@@ -1,6 +1,6 @@
 <div x-data="{ open: false, isDragging: false }" 
      id="chatbot-container"
-     class="fixed bottom-6 right-6 z-50 transition-none">
+     class="fixed top-24 right-6 z-50 transition-none">
     
     <!-- Standard Circular Chat Button -->
     <button id="chatbot-button"
@@ -20,12 +20,12 @@
     <!-- Classic Chat Window -->
     <div x-show="open" 
          x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0 translate-y-10"
+         x-transition:enter-start="opacity-0 -translate-y-10"
          x-transition:enter-end="opacity-100 translate-y-0"
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 translate-y-0"
-         x-transition:leave-end="opacity-0 translate-y-10"
-         class="absolute bottom-20 right-0 w-[350px] sm:w-[380px] bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] border border-gray-100 overflow-hidden flex flex-col origin-bottom-right">
+         x-transition:leave-end="opacity-0 -translate-y-10"
+         class="absolute top-20 right-0 w-[350px] sm:w-[380px] bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] border border-gray-100 overflow-hidden flex flex-col origin-top-right">
         
         <!-- Standard Header -->
         <div style="background-color: #B91C1C;" class="p-4 text-white flex items-center justify-between">
@@ -44,7 +44,7 @@
         </div>
 
         <!-- Messages Area -->
-        <div class="h-[400px] overflow-y-auto p-4 space-y-4 bg-gray-50" id="chat-messages">
+        <div class="h-[400px] overflow-y-auto p-4 space-y-4 bg-gray-50" id="chatbot-messages">
             <!-- Bot Message -->
             <div class="flex gap-2">
                 <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
@@ -132,37 +132,106 @@
     });
 })();
 
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('chat-input');
-    const messages = document.getElementById('chat-messages');
-    if (input.value.trim() === '') return;
+    const messages = document.getElementById('chatbot-messages');
+    const text = input.value.trim();
+    if (text === '') return;
 
+    // Append User Message
     const userMsg = document.createElement('div');
     userMsg.className = 'flex justify-end';
     userMsg.innerHTML = `
         <div style="background-color: #B91C1C;" class="rounded-2xl rounded-tr-none p-3 text-sm text-white shadow-sm max-w-[85%]">
-            ${input.value}
+            ${escapeHtml(text)}
         </div>
     `;
     messages.appendChild(userMsg);
-    
-    const text = input.value;
     input.value = '';
     messages.scrollTop = messages.scrollHeight;
 
-    setTimeout(() => {
+    // Append Typing Indicator
+    const typingIndicator = document.createElement('div');
+    typingIndicator.id = 'chatbot-typing';
+    typingIndicator.className = 'flex gap-2';
+    typingIndicator.innerHTML = `
+        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+            <img src="/3d_mascot_new.png" class="w-full h-full object-cover">
+        </div>
+        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 bg-[#B91C1C] rounded-full animate-bounce" style="animation-delay:0ms"></span>
+            <span class="w-1.5 h-1.5 bg-[#B91C1C] rounded-full animate-bounce" style="animation-delay:150ms"></span>
+            <span class="w-1.5 h-1.5 bg-[#B91C1C] rounded-full animate-bounce" style="animation-delay:300ms"></span>
+        </div>
+    `;
+    messages.appendChild(typingIndicator);
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+        const response = await fetch('/chatbot/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ message: text })
+        });
+
+        const data = await response.json();
+        
+        // Remove Typing Indicator
+        const indicator = document.getElementById('chatbot-typing');
+        if (indicator) indicator.remove();
+
         const botMsg = document.createElement('div');
         botMsg.className = 'flex gap-2';
-        botMsg.innerHTML = `
+        if (data.error) {
+            botMsg.innerHTML = `
+                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                    <img src="/3d_mascot_new.png" class="w-full h-full object-cover">
+                </div>
+                <div class="bg-red-50 p-3 rounded-2xl rounded-tl-none shadow-sm border border-red-100 text-sm text-red-600 max-w-[85%]">
+                    ❌ ${escapeHtml(data.error)}
+                </div>
+            `;
+        } else {
+            botMsg.innerHTML = `
+                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                    <img src="/3d_mascot_new.png" class="w-full h-full object-cover">
+                </div>
+                <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-gray-700 max-w-[85%] style="white-space: pre-wrap; word-break: break-word;">
+                    ${escapeHtml(data.message)}
+                </div>
+            `;
+        }
+        messages.appendChild(botMsg);
+        messages.scrollTop = messages.scrollHeight;
+    } catch (err) {
+        // Remove Typing Indicator
+        const indicator = document.getElementById('chatbot-typing');
+        if (indicator) indicator.remove();
+
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'flex gap-2';
+        errorMsg.innerHTML = `
             <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                 <img src="/3d_mascot_new.png" class="w-full h-full object-cover">
             </div>
-            <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-gray-700 max-w-[85%]">
-                ${text}? Saya sedang memprosesnya...
+            <div class="bg-red-50 p-3 rounded-2xl rounded-tl-none shadow-sm border border-red-100 text-sm text-red-600 max-w-[85%]">
+                ❌ Gagal terhubung ke server.
             </div>
         `;
-        messages.appendChild(botMsg);
+        messages.appendChild(errorMsg);
         messages.scrollTop = messages.scrollHeight;
-    }, 1000);
+    }
 }
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+}
+
 </script>
