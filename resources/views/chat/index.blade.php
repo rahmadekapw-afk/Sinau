@@ -118,6 +118,30 @@
     <style>
         .ai-response { white-space: pre-wrap; word-break: break-word; }
         textarea { overflow-y: hidden; }
+        .ai-response ul {
+            list-style-type: disc !important;
+            padding-left: 1.25rem !important;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .ai-response ol {
+            list-style-type: decimal !important;
+            padding-left: 1.25rem !important;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .ai-response li {
+            margin-top: 0.25rem !important;
+            margin-bottom: 0.25rem !important;
+            display: list-item !important;
+        }
+        .ai-response p {
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .ai-response strong {
+            font-weight: 700 !important;
+        }
     </style>
 
     <script>
@@ -131,7 +155,20 @@
         function scrollToBottom() {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-        scrollToBottom();
+
+        // Parse existing markdown messages in history on page load
+        function renderMarkdownHistory() {
+            document.querySelectorAll('.ai-response').forEach(el => {
+                el.innerHTML = marked.parse(el.textContent.trim());
+            });
+            scrollToBottom();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', renderMarkdownHistory);
+        } else {
+            renderMarkdownHistory();
+        }
 
         // Auto resize textarea
         messageInput.addEventListener('input', function() {
@@ -171,7 +208,7 @@
                             <img src="/3d_mascot_new.png" class="w-full h-full object-cover">
                         </div>
                         <div class="max-w-[75%] bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-50 dark:border-gray-600">
-                            <div class="text-sm leading-relaxed ai-response font-medium">${escapeHtml(text)}</div>
+                            <div class="text-sm leading-relaxed prose prose-sm dark:prose-invert max-w-none ai-response font-medium">${marked.parse(text)}</div>
                             <span class="text-xs text-gray-400 mt-1 block">${now}</span>
                         </div>
                     </div>

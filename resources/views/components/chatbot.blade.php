@@ -201,8 +201,10 @@ async function sendMessage() {
                 <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                     <img src="/3d_mascot_new.png" class="w-full h-full object-cover">
                 </div>
-                <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-gray-700 max-w-[85%] style="white-space: pre-wrap; word-break: break-word;">
-                    ${escapeHtml(data.message)}
+                <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-gray-700 max-w-[85%]">
+                    <div class="prose prose-sm max-w-none text-gray-700 dark:text-gray-200 leading-relaxed style-markdown">
+                        ${marked.parse(data.message)}
+                    </div>
                 </div>
             `;
         }
@@ -235,3 +237,30 @@ function escapeHtml(text) {
 }
 
 </script>
+
+<style>
+    .style-markdown ul {
+        list-style-type: disc !important;
+        padding-left: 1.25rem !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    .style-markdown ol {
+        list-style-type: decimal !important;
+        padding-left: 1.25rem !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    .style-markdown li {
+        margin-top: 0.25rem !important;
+        margin-bottom: 0.25rem !important;
+        display: list-item !important;
+    }
+    .style-markdown p {
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    .style-markdown strong {
+        font-weight: 700 !important;
+    }
+</style>
