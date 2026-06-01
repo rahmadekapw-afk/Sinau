@@ -46,6 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/billing', [\App\Http\Controllers\BillingController::class, 'index'])->name('billing.index');
     Route::post('/billing/process', [\App\Http\Controllers\BillingController::class, 'process'])->name('billing.process');
 
+    // Rencana Belajar AI
+    Route::get('/study-plan', [\App\Http\Controllers\StudyPlanController::class, 'index'])->name('study-plan.index');
+    Route::post('/study-plan/generate', [\App\Http\Controllers\StudyPlanController::class, 'generate'])->name('study-plan.generate');
+
     // Settings
     Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
     Route::patch('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');

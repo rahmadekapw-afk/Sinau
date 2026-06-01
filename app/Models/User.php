@@ -31,6 +31,8 @@ class User extends Authenticatable
         'apple_id',
         'avatar',
         'kelas',
+        'study_plan',
+        'study_plan_generated_at',
     ];
 
     /**
@@ -52,6 +54,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'study_plan_generated_at' => 'datetime',
         ];
     }
 
