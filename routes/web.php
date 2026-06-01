@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
     Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::post('/tasks/{task}/generate-materials', [TaskController::class, 'generateMaterials'])->name('tasks.generate-materials');
+    Route::post('/tasks/{task}/submit', [TaskController::class, 'submitAnswer'])->name('tasks.submit');
 
     // Calendar — Monthly grid terintegrasi dengan tasks
     Route::get('/calendar', [TaskController::class, 'calendar'])->name('calendar.index');

@@ -21,13 +21,17 @@ class Task extends Model
         'due_time',
         'subject',
         'is_ai',
+        'ai_content',
         'progress_percent',
         'completed_at',
+        'submission',
+        'submitted_at',
     ];
 
     protected $casts = [
         'due_date' => 'date',
         'completed_at' => 'datetime',
+        'submitted_at' => 'datetime',
         'is_ai' => 'boolean',
     ];
 

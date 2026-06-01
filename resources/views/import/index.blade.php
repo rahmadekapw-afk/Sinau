@@ -182,6 +182,84 @@
         </div>
     </div>
 
+    <!-- PRESET MODAL: Word to PDF Conversion Progress -->
+    <div id="converter-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-all duration-300">
+        <div class="bg-white dark:bg-gray-800 rounded-3xl max-w-md w-full shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden transform scale-95 transition-all duration-300 relative" id="converter-modal-card">
+            
+            <!-- Close Button (for success/error states) -->
+            <button onclick="closeConverterModal()" id="converter-modal-close-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <div class="p-8 text-center space-y-6">
+                <!-- State 1: LOADING (Default active) -->
+                <div id="converter-state-loading" class="space-y-6">
+                    <div class="relative w-24 h-24 flex items-center justify-center mx-auto">
+                        <div class="absolute inset-0 rounded-full border-4 border-red-100 dark:border-gray-700"></div>
+                        <div style="border-top-color: #B91C1C;" class="absolute inset-0 rounded-full border-4 border-transparent animate-spin"></div>
+                        <span class="text-4xl animate-bounce">⚙️</span>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Sedang Mengonversi...</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Harap tunggu. Sistem sedang mengolah halaman, font, dan elemen tabel dokumen Word Anda.</p>
+                    </div>
+                    <div class="w-full bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden relative">
+                        <div class="bg-red-600 h-full absolute inset-y-0 left-0 rounded-full animate-[loading-bar_1.8s_infinite_linear]" style="width: 40%;"></div>
+                    </div>
+                </div>
+
+                <!-- State 2: SUCCESS -->
+                <div id="converter-state-success" class="space-y-6 hidden">
+                    <div class="w-20 h-20 bg-green-50 dark:bg-green-900/30 text-green-500 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner border border-green-100 dark:border-green-800">
+                        ✨
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Konversi Berhasil!</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Dokumen PDF Anda telah selesai dirangkai dengan sempurna.</p>
+                    </div>
+                    
+                    <div class="bg-green-50/50 dark:bg-green-950/20 p-4 rounded-2xl border border-green-100 dark:border-green-900/30">
+                        <p class="text-xs text-gray-400 block mb-1">Nama File PDF:</p>
+                        <p id="success-file-name" class="font-bold text-sm text-green-700 dark:text-green-400 truncate">document.pdf</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <a id="success-download-link" href="#" style="background-color: #B91C1C;" class="w-full py-4 text-white font-bold text-md rounded-2xl shadow-lg hover:opacity-95 transition-all border-b-4 border-[#991B1B] flex items-center justify-center gap-2">
+                            📥 Download PDF Sekarang
+                        </a>
+                        <button onclick="closeConverterModal()" class="text-sm font-bold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition mt-2 block mx-auto">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+
+                <!-- State 3: ERROR -->
+                <div id="converter-state-error" class="space-y-6 hidden">
+                    <div class="w-20 h-20 bg-red-50 dark:bg-red-900/30 text-red-500 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner border border-red-100 dark:border-red-800">
+                        ❌
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Konversi Gagal</h3>
+                        <p id="error-message-text" class="text-red-600 dark:text-red-400 text-sm">Terjadi kesalahan sistem saat memproses dokumen.</p>
+                    </div>
+                    <div class="pt-2">
+                        <button onclick="closeConverterModal()" style="background-color: #B91C1C;" class="w-full py-3.5 text-white font-bold text-md rounded-2xl shadow-lg hover:opacity-95 transition-all border-b-4 border-[#991B1B]">
+                            Tutup & Coba Lagi
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <style>
+        @keyframes loading-bar {
+            0% { left: -40%; }
+            100% { left: 100%; }
+        }
+    </style>
+
     <script>
         // Scripts for AI Import
         function updateFileName(input) {
@@ -209,29 +287,113 @@
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
 
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            fileInput.addEventListener(eventName, preventDefaults, false);
-        });
+        const dropZone2 = document.getElementById('dropZone2');
+        const fileInput2 = document.getElementById('fileInput2');
 
         function preventDefaults(e) {
             e.preventDefault();
             e.stopPropagation();
         }
 
+        // Setup Drag and Drop Event Listeners for both Card Inputs
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileInput.addEventListener(eventName, preventDefaults, false);
+            fileInput2.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight inputs on drag enter
         ['dragenter', 'dragover'].forEach(eventName => {
-            fileInput.addEventListener(eventName, highlight, false);
+            fileInput.addEventListener(eventName, () => dropZone.classList.add('bg-accent/10', 'border-accent'), false);
+            fileInput2.addEventListener(eventName, () => dropZone2.classList.add('bg-accent/10', 'border-accent'), false);
         });
 
+        // Unhighlight inputs on drag leave
         ['dragleave', 'drop'].forEach(eventName => {
-            fileInput.addEventListener(eventName, unhighlight, false);
+            fileInput.addEventListener(eventName, () => dropZone.classList.remove('bg-accent/10', 'border-accent'), false);
+            fileInput2.addEventListener(eventName, () => dropZone2.classList.remove('bg-accent/10', 'border-accent'), false);
         });
 
-        function highlight(e) {
-            dropZone.classList.add('bg-accent/10', 'border-accent');
-        }
+        // Setup AJAX Submit Event Listener for Word to PDF Converter
+        document.getElementById('convertForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-        function unhighlight(e) {
-            dropZone.classList.remove('bg-accent/10', 'border-accent');
+            const fileInputEl = document.getElementById('fileInput2');
+            if (!fileInputEl.files || fileInputEl.files.length === 0) {
+                alert('Silakan pilih file Word (.docx) terlebih dahulu.');
+                return;
+            }
+
+            // Reset modal states to loading
+            document.getElementById('converter-state-loading').classList.remove('hidden');
+            document.getElementById('converter-state-success').classList.add('hidden');
+            document.getElementById('converter-state-error').classList.add('hidden');
+            document.getElementById('converter-modal-close-btn').classList.add('hidden');
+
+            // Open Modal
+            const modal = document.getElementById('converter-modal');
+            const card = document.getElementById('converter-modal-card');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                card.classList.remove('scale-95');
+                card.classList.add('scale-100');
+            }, 10);
+
+            // Prepare Form Data
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch('{{ route("converter.process") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Gagal mengonversi file. Format tidak didukung atau file rusak.');
+                }
+
+                // Show Success state in modal
+                document.getElementById('converter-state-loading').classList.add('hidden');
+                document.getElementById('converter-state-success').classList.remove('hidden');
+                document.getElementById('converter-modal-close-btn').classList.remove('hidden');
+                
+                document.getElementById('success-file-name').innerText = data.file_name;
+                
+                const dlLink = document.getElementById('success-download-link');
+                dlLink.href = data.download_url;
+                dlLink.setAttribute('download', data.file_name);
+
+                // Auto Trigger Download
+                const tempAnchor = document.createElement('a');
+                tempAnchor.href = data.download_url;
+                tempAnchor.setAttribute('download', data.file_name);
+                document.body.appendChild(tempAnchor);
+                tempAnchor.click();
+                document.body.removeChild(tempAnchor);
+
+            } catch (err) {
+                // Show Error state in modal
+                document.getElementById('converter-state-loading').classList.add('hidden');
+                document.getElementById('converter-state-error').classList.remove('hidden');
+                document.getElementById('converter-modal-close-btn').classList.remove('hidden');
+                document.getElementById('error-message-text').innerText = err.message;
+            }
+        });
+
+        function closeConverterModal() {
+            const modal = document.getElementById('converter-modal');
+            const card = document.getElementById('converter-modal-card');
+            card.classList.remove('scale-100');
+            card.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.replace('flex', 'hidden');
+            }, 150);
         }
     </script>
 </x-app-layout>

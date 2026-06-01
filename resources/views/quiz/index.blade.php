@@ -184,6 +184,15 @@
                                 <span class="text-xs text-gray-400 mt-1" id="result-correct-ratio">4 dari 5 Soal Benar</span>
                             </div>
                         </div>
+
+                        <!-- AI Penugasan Banner (Dynamic) -->
+                        <div id="ai-assignment-banner" class="hidden max-w-md mx-auto mt-6 bg-purple-50 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/30 p-4 rounded-2xl text-left flex items-start gap-3 shadow-sm">
+                            <span class="text-2xl mt-0.5 animate-bounce">✨</span>
+                            <div>
+                                <h4 class="font-bold text-purple-800 dark:text-purple-300 text-xs uppercase tracking-wider mb-1">Rekomendasi Belajar AI</h4>
+                                <p class="text-purple-700 dark:text-purple-400 text-xs leading-relaxed" id="ai-assignment-text">AI telah menjadwalkan tugas belajar remedial di papan Kanban Anda untuk meningkatkan bab ini.</p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Collapsible Question Breakdown -->
@@ -345,13 +354,25 @@
         });
 
         function loadQuestion() {
-            if (currentQuestions.length === 0) return;
+            // Pastikan data questions valid dan berbentuk array
+            if (!currentQuestions || !Array.isArray(currentQuestions) || currentQuestions.length === 0) {
+                console.error("currentQuestions is not a valid array", currentQuestions);
+                alert("Terjadi kesalahan: Struktur soal kuis dari AI tidak valid.");
+                resetQuiz();
+                return;
+            }
 
             const q = currentQuestions[currentQuestionIndex];
+            if (!q) {
+                console.error("Question not found at index:", currentQuestionIndex);
+                alert("Terjadi kesalahan: Gagal memuat data pertanyaan.");
+                resetQuiz();
+                return;
+            }
             
             // Header stats
-            document.getElementById('quiz-subject-badge').innerText = activeSubjectName;
-            document.getElementById('quiz-diff-badge').innerText = activeDiff;
+            document.getElementById('quiz-subject-badge').innerText = activeSubjectName || 'Umum';
+            document.getElementById('quiz-diff-badge').innerText = activeDiff || 'Sedang';
             document.getElementById('current-question-num').innerText = currentQuestionIndex + 1;
             document.getElementById('total-questions-num').innerText = currentQuestions.length;
 
@@ -360,13 +381,14 @@
             document.getElementById('quiz-progress-bar').style.width = percent + '%';
 
             // Question text
-            document.getElementById('quiz-question-text').innerText = q.question;
+            document.getElementById('quiz-question-text').innerText = q.question || '';
 
             // Render options
             const optionsContainer = document.getElementById('quiz-options-container');
             optionsContainer.innerHTML = '';
 
             const keys = ['A', 'B', 'C', 'D'];
+            q.options = q.options || {};
             keys.forEach(key => {
                 const optText = q.options[key] || '';
                 if (optText === '') return;
@@ -443,7 +465,9 @@
         function gradeQuiz() {
             let correctCount = 0;
             currentQuestions.forEach((q, idx) => {
-                if (userAnswers[idx] === q.correct_answer) {
+                const userAns = userAnswers[idx] || '';
+                const correctAns = q.correct_answer || '';
+                if (userAns.toString().trim().toUpperCase() === correctAns.toString().trim().toUpperCase()) {
                     correctCount++;
                 }
             });
@@ -459,9 +483,11 @@
             breakdownContainer.innerHTML = '';
 
             currentQuestions.forEach((q, idx) => {
-                const userAns = userAnswers[idx];
-                const correctAns = q.correct_answer;
-                const isCorrect = userAns === correctAns;
+                // Ensure robust safe defaults
+                q.options = q.options || {};
+                const userAns = userAnswers[idx] || '';
+                const correctAns = q.correct_answer || '';
+                const isCorrect = userAns.toString().trim().toUpperCase() === correctAns.toString().trim().toUpperCase();
 
                 const card = document.createElement('div');
                 card.className = `rounded-2xl border p-5 space-y-4 transition-all ${
@@ -470,24 +496,27 @@
                         : 'border-red-200 bg-red-50/20 dark:border-red-900/30'
                 }`;
 
+                const userOptionText = q.options[userAns] || 'Jawaban tidak terpilih';
+                const correctOptionText = q.options[correctAns] || 'Tidak ada';
+
                 card.innerHTML = `
                     <div class="flex items-start justify-between gap-4">
                         <div class="space-y-1">
                             <span class="text-xs font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'} uppercase">
                                 Soal ${idx + 1} · ${isCorrect ? '✨ Benar' : '❌ Salah'}
                             </span>
-                            <h4 class="font-bold text-gray-800 dark:text-gray-100 leading-relaxed text-sm">${escapeHtml(q.question)}</h4>
+                            <h4 class="font-bold text-gray-800 dark:text-gray-100 leading-relaxed text-sm">${escapeHtml(q.question || 'Soal Tanpa Pertanyaan')}</h4>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                         <div class="p-3 rounded-xl bg-white dark:bg-gray-800 border ${isCorrect ? 'border-green-100' : 'border-red-100'}">
                             <span class="text-gray-400 block mb-0.5">Jawaban Anda:</span>
-                            <span class="font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}">(${userAns}) ${escapeHtml(q.options[userAns] || '')}</span>
+                            <span class="font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}">(${userAns}) ${escapeHtml(userOptionText)}</span>
                         </div>
                         <div class="p-3 rounded-xl bg-white dark:bg-gray-800 border border-green-100">
                             <span class="text-gray-400 block mb-0.5">Jawaban Benar:</span>
-                            <span class="font-bold text-green-600">(${correctAns}) ${escapeHtml(q.options[correctAns] || '')}</span>
+                            <span class="font-bold text-green-600">(${correctAns}) ${escapeHtml(correctOptionText)}</span>
                         </div>
                     </div>
 
@@ -497,7 +526,7 @@
                             <span class="flex items-center gap-2">💡 Pembahasan AI</span>
                             <span id="exp-arrow-${idx}" class="transition-transform duration-200">▼</span>
                         </button>
-                        <div id="exp-content-${idx}" class="hidden p-4 border-t border-gray-100 dark:border-gray-700 text-xs text-gray-600 dark:text-gray-300 leading-relaxed style="white-space: pre-wrap;">
+                        <div id="exp-content-${idx}" class="hidden p-4 border-t border-gray-100 dark:border-gray-700 text-xs text-gray-600 dark:text-gray-300 leading-relaxed" style="white-space: pre-wrap;">
                             ${escapeHtml(q.explanation || 'Tidak ada penjelasan yang tersedia.')}
                         </div>
                     </div>
@@ -505,6 +534,85 @@
 
                 breakdownContainer.appendChild(card);
             });
+
+            // Trigger Adaptive Remedial or Enrichment Task based on Score
+            const banner = document.getElementById('ai-assignment-banner');
+            banner.classList.add('hidden'); // Reset
+
+            if (score < 60) {
+                // Calculate tomorrow's date string
+                const tomorrow = new Date(Date.now() + 86400000);
+                const tomorrowDateString = tomorrow.getFullYear() + '-' + 
+                                           String(tomorrow.getMonth() + 1).padStart(2, '0') + '-' + 
+                                           String(tomorrow.getDate()).padStart(2, '0');
+                
+                const taskTitle = `📚 Remedial AI: Pendalaman ${activeSubjectName || 'Kuis'}`;
+                const taskDesc = `Sistem AI mendeteksi Anda mendapatkan skor ${score}% pada kuis "${activeSubjectName || 'Kuis'}".\n\nTugas Remedial Mandiri Anda:\n1. Tinjau kembali kesalahan Anda pada riwayat Pembahasan AI di bawah.\n2. Carilah materi terkait topik ini di perpustakaan digital.\n3. Lakukan pengulangan latihan kuis setelah Anda merasa siap.`;
+
+                // Post via fetch API to task store
+                fetch('{{ route("tasks.store") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: taskTitle,
+                        description: taskDesc,
+                        type: 'study',
+                        priority: 'high',
+                        due_date: tomorrowDateString,
+                        due_time: '08:00',
+                        subject: activeSubjectName || 'Kuis',
+                        is_ai: true
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('ai-assignment-text').innerText = `AI mendeteksi Anda memerlukan latihan ekstra. Tugas remedial mandiri "${taskTitle}" telah otomatis ditambahkan ke Kalender & Papan Kanban Anda! 📅`;
+                        banner.classList.remove('hidden');
+                    }
+                })
+                .catch(err => console.error("Error creating AI remedial task:", err));
+            } else if (score >= 90) {
+                // Give a congratulate task or positive feedback
+                const tomorrow = new Date(Date.now() + 86400000);
+                const tomorrowDateString = tomorrow.getFullYear() + '-' + 
+                                           String(tomorrow.getMonth() + 1).padStart(2, '0') + '-' + 
+                                           String(tomorrow.getDate()).padStart(2, '0');
+                
+                const taskTitle = `🚀 Pengayaan AI: Soal Lanjutan ${activeSubjectName || 'Kuis'}`;
+                const taskDesc = `Selamat! Anda berhasil mencapai skor luar biasa ${score}% pada kuis "${activeSubjectName || 'Kuis'}".\n\nTugas Pengayaan AI Anda:\n1. Lanjutkan tingkat kesulitan kuis berikutnya ke level "Tinggi" (Hard).\n2. Diskusikan topik ini dengan teman belajar Anda.\n3. Pertahankan prestasimu!`;
+
+                fetch('{{ route("tasks.store") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: taskTitle,
+                        description: taskDesc,
+                        type: 'study',
+                        priority: 'low',
+                        due_date: tomorrowDateString,
+                        due_time: '08:00',
+                        subject: activeSubjectName || 'Kuis',
+                        is_ai: true
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('ai-assignment-text').innerText = `Skor Anda luar biasa! AI telah memberikan tugas pengayaan opsional "${taskTitle}" di Papan Kanban Anda untuk menjaga keunggulan Anda! 🌟`;
+                        banner.classList.remove('hidden');
+                    }
+                })
+                .catch(err => console.error("Error creating AI congratulate task:", err));
+            }
 
             // Switch to Results stage
             document.getElementById('stage-quiz').classList.replace('block', 'hidden');
