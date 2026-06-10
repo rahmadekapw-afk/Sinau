@@ -100,5 +100,15 @@
                 </a>
             </div>
         </div>
+
+        <!-- Link to Register -->
+        <div class="mt-8 pt-6 border-t border-slate-100 text-center">
+            <p class="text-sm text-slate-500">
+                Belum punya akun? 
+                <a class="font-bold text-accent hover:underline focus:outline-none focus:ring-2 focus:ring-accent rounded-md transition duration-150" href="{{ route('register') }}">
+                    Daftar di sini
+                </a>
+            </p>
+        </div>
     </form>
 </x-guest-layout>
